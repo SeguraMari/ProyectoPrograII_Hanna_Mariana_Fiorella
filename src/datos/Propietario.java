@@ -7,7 +7,7 @@ package datos;
  */
 public class Propietario {
     
-    private int cedPropietario;
+    private String cedPropietario;
     private String nomPropietario;
     private String genero;
     private String direccion;
@@ -20,7 +20,7 @@ public class Propietario {
    
     
 
-    public Propietario(int cedPropietario, String nomPropietario, String genero, String direccion, String telefono, String email) {
+    public Propietario(String cedPropietario, String nomPropietario, String genero, String direccion, String telefono, String email) {
         this.cedPropietario = cedPropietario;
         this.nomPropietario = nomPropietario;
         this.genero = genero;
@@ -29,11 +29,11 @@ public class Propietario {
         this.email = email;
     }
 
-    public int getCedPropietario() {
+    public String getCedPropietario() {
         return cedPropietario;
     }
 
-    public void setCedPropietario(int cedPropietario) {
+    public void setCedPropietario(String cedPropietario) {
         this.cedPropietario = cedPropietario;
     }
 
