@@ -23,22 +23,29 @@ public class GestionDatos {
 
     }
 
+    /*
     // ==========================================
-    // Metodo Busqueda Evaluar Duplicados
+    //    Metodo Busqueda Evaluar Duplicados
     // ==========================================
-    
-    
-    //Buscar proper x ced
-    
-    public Propietario buscarPropietario(String cedula){
-        for(Propietario p : listaPropietario){
-          if(p.getCedPropietario().equalsIgnoreCase(cedula)){
-              return p;
-          }  
+     */
+    public Propietario buscarPropietario(String cedula) {
+        for (Propietario p : listaPropietario) {
+            if (p.getCedPropietario().equalsIgnoreCase(cedula)) {
+                return p; // Lo encontró
+            }
         }
-        return null;// No lo encuentra
+        return null; // No existe
     }
-    
+
+    public Inquilino buscarInquilino(int cedula) {
+        for (Inquilino inq : listaInquilino) {
+            if (inq.getCedInqui() == cedula) {
+                return inq; // Lo encontró, devuelve el objeto
+            }
+        }
+        return null; // No lo encontró
+    }
+
     //Buscar Vivienda x ID
     public Vivienda buscarVivienda(int id) {
         for (Vivienda v : listaVivienda) {
@@ -48,7 +55,7 @@ public class GestionDatos {
         }
         return null;
     }
-    
+
     //Buscar Alquiler x num
     public Alquileres buscarAlquiler(int num) {
         for (Alquileres a : listaAlquiler) {
@@ -58,18 +65,44 @@ public class GestionDatos {
         }
         return null;
     }
-    
-    //Metodos para agregar
+
+    /*
+    //==============================================
+    //        Metodos Para Agregar
+    //==============================================
+    */
     public boolean agregarPropietario(Propietario p) {
-        if (buscarPropietario(p.getCedPropietario()) == null) {
-            listaPropietario.add(p);
-            return true; // Agregado con éxito
+        // Recorremos la lista para ver si ya existe la cédula
+        for (Propietario prop : listaPropietario) {
+            if (prop.getCedPropietario().equalsIgnoreCase(p.getCedPropietario())) {
+                return false; // Ya existe, no lo agregamos
+            }
         }
-        return false; // Cédula duplicada
+        listaPropietario.add(p);
+        return true; // Se agregó con éxito
+    }
+
+    public boolean agregarInquilino(Inquilino i) {
+        for (Inquilino inq : listaInquilino) {
+            if (inq.getCedInqui() == i.getCedInqui()) {
+                return false;
+            }
+        }
+        listaInquilino.add(i);
+        return true;
     }
     
     
+    public boolean agregarVivienda(Vivienda v) {
+        for (Vivienda viv : listaVivienda) {
+            if (viv.getIdVivienda() == v.getIdVivienda()) {
+                return false;
+            }
+        }
+        listaVivienda.add(v);
+        return true;
+    }
     
     
-    
+
 }

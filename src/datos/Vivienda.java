@@ -6,7 +6,7 @@ package datos;
 
 /**
  *
- * @author Graciela
+ * @author Graciela_Hanna_Fiorella
  */
 public class Vivienda {
     
