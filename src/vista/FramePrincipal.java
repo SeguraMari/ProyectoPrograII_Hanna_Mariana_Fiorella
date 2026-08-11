@@ -33,9 +33,9 @@ public class FramePrincipal extends javax.swing.JFrame {
 
         jPanel1 = new javax.swing.JPanel();
         btnPropietario = new javax.swing.JButton();
-        jButton2 = new javax.swing.JButton();
-        jButton3 = new javax.swing.JButton();
-        jButton4 = new javax.swing.JButton();
+        btnViviendas = new javax.swing.JButton();
+        btnInquilinos = new javax.swing.JButton();
+        btnAlquileres = new javax.swing.JButton();
         btnMensualidades = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
@@ -57,14 +57,29 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton2.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
-        jButton2.setText("Viviendas");
+        btnViviendas.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnViviendas.setText("Viviendas");
+        btnViviendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnViviendasActionPerformed(evt);
+            }
+        });
 
-        jButton3.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
-        jButton3.setText("Inquilinos");
+        btnInquilinos.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnInquilinos.setText("Inquilinos");
+        btnInquilinos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInquilinosActionPerformed(evt);
+            }
+        });
 
-        jButton4.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
-        jButton4.setText("Alquileres");
+        btnAlquileres.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnAlquileres.setText("Alquileres");
+        btnAlquileres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnAlquileresActionPerformed(evt);
+            }
+        });
 
         btnMensualidades.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         btnMensualidades.setText("Mensualidades");
@@ -85,10 +100,10 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnViviendas, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPropietario)
-                    .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnInquilinos, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnAlquileres, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
@@ -98,11 +113,11 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addGap(55, 55, 55)
                 .addComponent(btnPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton2, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnViviendas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnInquilinos, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnAlquileres, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -154,6 +169,24 @@ public class FramePrincipal extends javax.swing.JFrame {
        mensualidades.setVisible(true);
     }//GEN-LAST:event_btnMensualidadesActionPerformed
 
+    private void btnViviendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViviendasActionPerformed
+       DlgViviendas vivienda = new DlgViviendas(this, false);
+       vivienda.setLocationRelativeTo(this);
+       vivienda.setVisible(true);
+    }//GEN-LAST:event_btnViviendasActionPerformed
+
+    private void btnInquilinosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInquilinosActionPerformed
+        DlgInquilinos inqui = new DlgInquilinos(this, false);
+        inqui.setLocationRelativeTo(this);
+        inqui.setVisible(true);
+    }//GEN-LAST:event_btnInquilinosActionPerformed
+
+    private void btnAlquileresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlquileresActionPerformed
+     DlgAlquileres alquiler = new DlgAlquileres(this, false);
+     alquiler.setLocationRelativeTo(this);
+     alquiler.setVisible(true);
+    }//GEN-LAST:event_btnAlquileresActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -180,11 +213,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnAlquileres;
+    private javax.swing.JButton btnInquilinos;
     private javax.swing.JButton btnMensualidades;
     private javax.swing.JButton btnPropietario;
-    private javax.swing.JButton jButton2;
-    private javax.swing.JButton jButton3;
-    private javax.swing.JButton jButton4;
+    private javax.swing.JButton btnViviendas;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
