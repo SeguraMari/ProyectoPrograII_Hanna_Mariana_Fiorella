@@ -36,7 +36,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
         jButton4 = new javax.swing.JButton();
-        jButton5 = new javax.swing.JButton();
+        btnMensualidades = new javax.swing.JButton();
         jButton6 = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
@@ -66,8 +66,13 @@ public class FramePrincipal extends javax.swing.JFrame {
         jButton4.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         jButton4.setText("Alquileres");
 
-        jButton5.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
-        jButton5.setText("Mensualidades");
+        btnMensualidades.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnMensualidades.setText("Mensualidades");
+        btnMensualidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnMensualidadesActionPerformed(evt);
+            }
+        });
 
         jButton6.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         jButton6.setText("Ganancias");
@@ -84,7 +89,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                     .addComponent(btnPropietario)
                     .addComponent(jButton3, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(26, Short.MAX_VALUE))
         );
         jPanel1Layout.setVerticalGroup(
@@ -99,7 +104,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton4, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton5, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(39, Short.MAX_VALUE))
@@ -143,6 +148,12 @@ public class FramePrincipal extends javax.swing.JFrame {
        proper.setVisible(true);
     }//GEN-LAST:event_btnPropietarioActionPerformed
 
+    private void btnMensualidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMensualidadesActionPerformed
+       DlgGestionMensualidades mensualidades = new DlgGestionMensualidades(this, false);
+       mensualidades.setLocationRelativeTo(this);
+       mensualidades.setVisible(true);
+    }//GEN-LAST:event_btnMensualidadesActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -169,11 +180,11 @@ public class FramePrincipal extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton btnMensualidades;
     private javax.swing.JButton btnPropietario;
     private javax.swing.JButton jButton2;
     private javax.swing.JButton jButton3;
     private javax.swing.JButton jButton4;
-    private javax.swing.JButton jButton5;
     private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;

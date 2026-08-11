@@ -1,7 +1,4 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JDialog.java to edit this template
- */
+
 package vista;
 
 import datos.Propietario;
@@ -11,7 +8,7 @@ import javax.swing.table.DefaultTableModel;
 
 /**
  *
- * @author Graciela
+ * @author Graciela_Hanna_Fiorella
  */
 public class DlgPropietario1 extends javax.swing.JDialog {
     

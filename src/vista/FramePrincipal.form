@@ -79,7 +79,7 @@
                       <Component id="btnPropietario" min="-2" max="-2" attributes="0"/>
                       <Component id="jButton3" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
                       <Component id="jButton4" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
-                      <Component id="jButton5" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
+                      <Component id="btnMensualidades" alignment="0" min="-2" pref="136" max="-2" attributes="0"/>
                   </Group>
                   <EmptySpace pref="26" max="32767" attributes="0"/>
               </Group>
@@ -97,7 +97,7 @@
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton4" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
-                  <Component id="jButton5" min="-2" pref="50" max="-2" attributes="0"/>
+                  <Component id="btnMensualidades" min="-2" pref="50" max="-2" attributes="0"/>
                   <EmptySpace max="-2" attributes="0"/>
                   <Component id="jButton6" min="-2" pref="49" max="-2" attributes="0"/>
                   <EmptySpace pref="39" max="32767" attributes="0"/>
@@ -144,13 +144,16 @@
             <Property name="text" type="java.lang.String" value="Alquileres"/>
           </Properties>
         </Component>
-        <Component class="javax.swing.JButton" name="jButton5">
+        <Component class="javax.swing.JButton" name="btnMensualidades">
           <Properties>
             <Property name="font" type="java.awt.Font" editor="org.netbeans.beaninfo.editors.FontEditor">
               <Font name="Segoe UI" size="10" style="3"/>
             </Property>
             <Property name="text" type="java.lang.String" value="Mensualidades"/>
           </Properties>
+          <Events>
+            <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="btnMensualidadesActionPerformed"/>
+          </Events>
         </Component>
         <Component class="javax.swing.JButton" name="jButton6">
           <Properties>

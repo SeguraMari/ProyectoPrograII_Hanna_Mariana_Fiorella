@@ -5,7 +5,7 @@ import java.time.LocalDate;
 
 /**
  *
- * @author Graciela
+ * @author Graciela_Hanna_Fiorella
  */
 public class Mensualidades {
     
