@@ -37,7 +37,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnInquilinos = new javax.swing.JButton();
         btnAlquileres = new javax.swing.JButton();
         btnMensualidades = new javax.swing.JButton();
-        jButton6 = new javax.swing.JButton();
+        btnGanancias = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
         jMenuBar1 = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
@@ -89,8 +89,13 @@ public class FramePrincipal extends javax.swing.JFrame {
             }
         });
 
-        jButton6.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
-        jButton6.setText("Ganancias");
+        btnGanancias.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnGanancias.setText("Ganancias");
+        btnGanancias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnGananciasActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
@@ -99,7 +104,7 @@ public class FramePrincipal extends javax.swing.JFrame {
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(18, 18, 18)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(btnGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnViviendas, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnPropietario)
                     .addComponent(btnInquilinos, javax.swing.GroupLayout.PREFERRED_SIZE, 136, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -121,7 +126,7 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jButton6, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(39, Short.MAX_VALUE))
         );
 
@@ -187,6 +192,12 @@ public class FramePrincipal extends javax.swing.JFrame {
      alquiler.setVisible(true);
     }//GEN-LAST:event_btnAlquileresActionPerformed
 
+    private void btnGananciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGananciasActionPerformed
+       DlgGanancias ganancias = new DlgGanancias(this, true);
+       ganancias.setLocationRelativeTo(this);
+       ganancias.setVisible(true);
+    }//GEN-LAST:event_btnGananciasActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -214,11 +225,11 @@ public class FramePrincipal extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnAlquileres;
+    private javax.swing.JButton btnGanancias;
     private javax.swing.JButton btnInquilinos;
     private javax.swing.JButton btnMensualidades;
     private javax.swing.JButton btnPropietario;
     private javax.swing.JButton btnViviendas;
-    private javax.swing.JButton jButton6;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;

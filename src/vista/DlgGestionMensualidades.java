@@ -9,7 +9,7 @@ package vista;
  * @author Graciela
  */
 public class DlgGestionMensualidades extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgGestionMensualidades.class.getName());
 
     /**
@@ -44,9 +44,9 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
         jPanel3 = new javax.swing.JPanel();
         jLabel4 = new javax.swing.JLabel();
         jLabel5 = new javax.swing.JLabel();
-        jTextField2 = new javax.swing.JTextField();
+        txtAnio = new javax.swing.JTextField();
         btnMostrarMensualidades = new javax.swing.JButton();
-        jComboBox2 = new javax.swing.JComboBox<>();
+        cmbMes = new javax.swing.JComboBox<>();
         jLabel6 = new javax.swing.JLabel();
         jLabel7 = new javax.swing.JLabel();
         chkInquilino = new javax.swing.JCheckBox();
@@ -90,17 +90,17 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
 
         jPanel2.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel1.setText("Fecha Actual");
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel1.setText("Fecha Actual");
 
-        jLabel2.setText("Mes");
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel2.setText("Mes");
 
-        jLabel3.setText("Año");
         jLabel3.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel3.setText("Año");
 
-        btnGenerar.setText("Generar");
         btnGenerar.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnGenerar.setText("Generar");
 
         jComboBox1.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero ", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
 
@@ -148,21 +148,21 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
 
         jPanel3.setBackground(new java.awt.Color(204, 204, 204));
 
-        jLabel4.setText("Mes");
         jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel4.setText("Mes");
 
-        jLabel5.setText("Año");
         jLabel5.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        jLabel5.setText("Año");
 
-        btnMostrarMensualidades.setText("Mostrar Mensualidades");
         btnMostrarMensualidades.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        btnMostrarMensualidades.setText("Mostrar Mensualidades");
         btnMostrarMensualidades.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnMostrarMensualidadesActionPerformed(evt);
             }
         });
 
-        jComboBox2.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero ", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
+        cmbMes.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Enero ", "Febrero", "Marzo", "Abril", "Mayo", "Junio", "Julio", "Agosto", "Septiembre", "Octubre", "Noviembre", "Diciembre" }));
 
         javax.swing.GroupLayout jPanel3Layout = new javax.swing.GroupLayout(jPanel3);
         jPanel3.setLayout(jPanel3Layout);
@@ -178,8 +178,8 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
                             .addComponent(jLabel4, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                            .addComponent(jTextField2)
-                            .addComponent(jComboBox2, 0, 114, Short.MAX_VALUE))))
+                            .addComponent(txtAnio)
+                            .addComponent(cmbMes, 0, 114, Short.MAX_VALUE))))
                 .addContainerGap(60, Short.MAX_VALUE))
         );
         jPanel3Layout.setVerticalGroup(
@@ -188,21 +188,21 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
                 .addGap(29, 29, 29)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel4)
-                    .addComponent(jComboBox2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(cmbMes, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(15, 15, 15)
                 .addGroup(jPanel3Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel5)
-                    .addComponent(jTextField2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtAnio, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(btnMostrarMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(16, 16, 16))
         );
 
-        jLabel6.setText("Generar Mensualidades");
         jLabel6.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        jLabel6.setText("Generar Mensualidades");
 
-        jLabel7.setText("Mostrar Mensualidades");
         jLabel7.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
+        jLabel7.setText("Mostrar Mensualidades");
 
         chkInquilino.setText("Inquilino");
 
@@ -280,9 +280,11 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnMostrarMensualidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMostrarMensualidadesActionPerformed
-   DlgInfoMensualidad infoMen = new DlgInfoMensualidad(null, false);
-   infoMen.setLocationRelativeTo(this);
-   infoMen.setVisible(true);
+        String mes = cmbMes.getSelectedItem().toString();
+        int anio = Integer.parseInt(txtAnio.getText());
+        DlgInfoMensualidad infoMen = new DlgInfoMensualidad(null, false);
+        infoMen.setLocationRelativeTo(this);
+        infoMen.setVisible(true);
     }//GEN-LAST:event_btnMostrarMensualidadesActionPerformed
 
     /**
@@ -329,8 +331,8 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     private javax.swing.JCheckBox chkAnio;
     private javax.swing.JCheckBox chkInquilino;
     private javax.swing.JCheckBox chkMes;
+    private javax.swing.JComboBox<String> cmbMes;
     private javax.swing.JComboBox<String> jComboBox1;
-    private javax.swing.JComboBox<String> jComboBox2;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;
@@ -345,9 +347,9 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     private javax.swing.JPanel jPanel3;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField4;
     private javax.swing.JTable tblMensualidades;
+    private javax.swing.JTextField txtAnio;
     private javax.swing.JTextField txtFiltrar;
     // End of variables declaration//GEN-END:variables
 }
