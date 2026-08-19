@@ -1,7 +1,8 @@
 
 package vista;
 
-import datos.Inquilino;
+import clases.Inquilino;
+import datos.GestionDatos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,13 +12,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgInquilinos extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgInquilinos.class.getName());
 
     private ArrayList<Inquilino> listaInquilino;
     private DefaultTableModel model;
-    
-    
+    private GestionDatos gestion;
+
+
     /**
      * Creates new form DlgPropietario1
      */
@@ -25,20 +27,74 @@ public class DlgInquilinos extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-    
+
+
     public DlgInquilinos(java.awt.Frame parent, boolean modal,
             ArrayList<Inquilino> listaInquilino) {
         super(parent, modal);
         initComponents();
         this.listaInquilino = listaInquilino;
     }
-    
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación. Es el constructor utilizado por
+     * {@code FramePrincipal}.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgInquilinos(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+        cargarTabla();
+    }
+
      public  ArrayList<Inquilino> getListaInquilino() {
         return listaInquilino;
     }
-    
-    
+
+    /**
+     * Carga en {@code tblInfo} los inquilinos existentes en GestionDatos.
+     */
+    private void cargarTabla() {
+        String[] columnas = {"Cédula", "Nombre", "Género", "Fecha Nac.", "Dirección", "Teléfono", "Email", "Ocupación"};
+        ArrayList<Inquilino> inquilinos = gestion.obtenerInquilinos();
+        Object[][] datos = new Object[inquilinos.size()][columnas.length];
+        for (int fila = 0; fila < inquilinos.size(); fila++) {
+            Inquilino i = inquilinos.get(fila);
+            datos[fila][0] = i.getCedInqui();
+            datos[fila][1] = i.getNomInqui();
+            datos[fila][2] = i.getGenero();
+            datos[fila][3] = i.getFechNac();
+            datos[fila][4] = i.getDireccion();
+            datos[fila][5] = i.getTelefono();
+            datos[fila][6] = i.getEmail();
+            datos[fila][7] = i.getOcupacion();
+        }
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
+
+    /**
+     * Muestra en {@code tblInfo} únicamente el inquilino recibido.
+     */
+    private void mostrarInquilino(Inquilino i) {
+        String[] columnas = {"Cédula", "Nombre", "Género", "Fecha Nac.", "Dirección", "Teléfono", "Email", "Ocupación"};
+        Object[][] datos = new Object[1][columnas.length];
+        datos[0][0] = i.getCedInqui();
+        datos[0][1] = i.getNomInqui();
+        datos[0][2] = i.getGenero();
+        datos[0][3] = i.getFechNac();
+        datos[0][4] = i.getDireccion();
+        datos[0][5] = i.getTelefono();
+        datos[0][6] = i.getEmail();
+        datos[0][7] = i.getOcupacion();
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,20 +117,37 @@ public class DlgInquilinos extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jLabel1.setText("Buscar");
+        jLabel1.setText("BUSCAR");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
 
         btnInsertar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/insertar (2).png"))); // NOI18N
+        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregate.png"))); // NOI18N
         btnInsertar.setText("Insertar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editate.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminaaar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,16 +160,16 @@ public class DlgInquilinos extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnInsertar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEliminar)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 121, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -108,7 +181,7 @@ public class DlgInquilinos extends javax.swing.JDialog {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -126,18 +199,18 @@ public class DlgInquilinos extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -146,18 +219,87 @@ public class DlgInquilinos extends javax.swing.JDialog {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (tblInfo.getSelectedRowCount() == 1){
-            int resp = JOptionPane.showConfirmDialog(this, "¿Desea borrar el Objeto seleccionado?");
-            
+            int resp = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el inquilino seleccionado?");
+
             if (resp == 0){  //El usuario desea borrar
-                int index = tblInfo.getSelectedRow();
-               
-                listaInquilino.remove(index);
-                JOptionPane.showMessageDialog(this, "Objeto eliminado");
-            }      
+                int fila = tblInfo.getSelectedRow();
+                int cedula = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+                boolean eliminado = gestion.eliminarInquilino(cedula);
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Inquilino eliminado correctamente.");
+                    cargarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar: el inquilino tiene alquileres asociados.");
+                }
+            }
         }else{
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Objeto");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un inquilino de la tabla para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    /**
+     * Busca un inquilino por cédula a partir del texto ingresado en
+     * {@code txtBuscar} y muestra únicamente ese registro en la tabla.
+     * Si el campo está vacío, vuelve a mostrar todos los registros.
+     */
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {
+        String texto = txtBuscar.getText().trim();
+
+        if (texto.isEmpty()) {
+            cargarTabla();
+            return;
+        }
+
+        int cedula;
+        try {
+            cedula = Integer.parseInt(texto);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "La cédula del inquilino debe ser numérica.");
+            return;
+        }
+
+        Inquilino encontrado = gestion.buscarInquilino(cedula);
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún inquilino con esa cédula.");
+        } else {
+            mostrarInquilino(encontrado);
+        }
+        
+         txtBuscar.setText("");
+    }
+
+    /**
+     * Toma la fila seleccionada de {@code tblInfo}, obtiene la cédula de su
+     * columna 0 y busca el inquilino mediante
+     * {@code gestion.buscarInquilino(...)}; si existe, abre
+     * {@link FrmNuevoInquilino} en modo edición precargado con sus datos.
+     */
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tblInfo.getSelectedRowCount() != 1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un inquilino de la tabla para editar.");
+            return;
+        }
+        int fila = tblInfo.getSelectedRow();
+        int cedula = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+        Inquilino encontrado = gestion.buscarInquilino(cedula);
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(this, "El inquilino seleccionado ya no existe.");
+            return;
+        }
+        FrmNuevoInquilino frm = new FrmNuevoInquilino(null, true, gestion, encontrado);
+        frm.setVisible(true);
+        cargarTabla();
+    }
+
+    /**
+     * Abre {@link FrmNuevoInquilino} para insertar un nuevo inquilino y,
+     * al cerrarse, refresca la tabla con los datos actuales de GestionDatos.
+     */
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {
+        FrmNuevoInquilino frm = new FrmNuevoInquilino(null, true, gestion);
+        frm.setVisible(true);
+        cargarTabla();
+    }
 
     /**
      * @param args the command line arguments

@@ -2,7 +2,8 @@
 package vista;
 
 
-import datos.Vivienda;
+import clases.Vivienda;
+import datos.GestionDatos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -12,13 +13,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgViviendas extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgViviendas.class.getName());
 
     private ArrayList<Vivienda> listaVivienda;
     private DefaultTableModel model;
-    
-    
+    private GestionDatos gestion;
+
+
     /**
      * Creates new form DlgPropietario1
      */
@@ -26,20 +28,90 @@ public class DlgViviendas extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-    
+
+
     public DlgViviendas(java.awt.Frame parent, boolean modal,
-            ArrayList<Vivienda> listaPropietario) {
+            ArrayList<Vivienda> listaVivienda) {
         super(parent, modal);
         initComponents();
-        this.listaVivienda = listaPropietario;
+        this.listaVivienda = listaVivienda;
     }
-    
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación. Es el constructor utilizado por
+     * {@code FramePrincipal}.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgViviendas(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+        cargarTabla();
+    }
+
      public  ArrayList<Vivienda> getListaPropietario() {
         return listaVivienda;
     }
-    
-    
+
+    /**
+     * Carga en {@code tblInfo} las viviendas existentes en GestionDatos.
+     */
+    private void cargarTabla() {
+        String[] columnas = {"ID", "Descripción", "Dirección", "M2 Const.", "M2 Lote",
+            "Tipo Const.", "Cochera", "Habitac.", "Baños", "Carretera",
+            "Precio Base", "Depósito", "Propietario", "Estado"};
+        ArrayList<Vivienda> viviendas = gestion.obtenerViviendas();
+        Object[][] datos = new Object[viviendas.size()][columnas.length];
+        for (int fila = 0; fila < viviendas.size(); fila++) {
+            Vivienda v = viviendas.get(fila);
+            datos[fila][0] = v.getIdVivienda();
+            datos[fila][1] = v.getDescripcion();
+            datos[fila][2] = v.getDireccion();
+            datos[fila][3] = v.getMtsConstruct();
+            datos[fila][4] = v.getMtsLote();
+            datos[fila][5] = v.getTipoConstruccion();
+            datos[fila][6] = v.isCochera();
+            datos[fila][7] = v.getCantHabitac();
+            datos[fila][8] = v.getCantBanios();
+            datos[fila][9] = v.getCarretera();
+            datos[fila][10] = v.getPrecioBase();
+            datos[fila][11] = v.getDepositoGarantia();
+            datos[fila][12] = v.getPropietario() == null ? "" : v.getPropietario().getNomPropiet();
+            datos[fila][13] = v.getEstado();
+        }
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
+
+    /**
+     * Muestra en {@code tblInfo} únicamente la vivienda recibida.
+     */
+    private void mostrarVivienda(Vivienda v) {
+        String[] columnas = {"ID", "Descripción", "Dirección", "M2 Const.", "M2 Lote",
+            "Tipo Const.", "Cochera", "Habitac.", "Baños", "Carretera",
+            "Precio Base", "Depósito", "Propietario", "Estado"};
+        Object[][] datos = new Object[1][columnas.length];
+        datos[0][0] = v.getIdVivienda();
+        datos[0][1] = v.getDescripcion();
+        datos[0][2] = v.getDireccion();
+        datos[0][3] = v.getMtsConstruct();
+        datos[0][4] = v.getMtsLote();
+        datos[0][5] = v.getTipoConstruccion();
+        datos[0][6] = v.isCochera();
+        datos[0][7] = v.getCantHabitac();
+        datos[0][8] = v.getCantBanios();
+        datos[0][9] = v.getCarretera();
+        datos[0][10] = v.getPrecioBase();
+        datos[0][11] = v.getDepositoGarantia();
+        datos[0][12] = v.getPropietario() == null ? "" : v.getPropietario().getNomPropiet();
+        datos[0][13] = v.getEstado();
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -62,20 +134,37 @@ public class DlgViviendas extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(javax.swing.BorderFactory.createMatteBorder(1, 1, 1, 1, new java.awt.Color(51, 51, 51)));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jLabel1.setText("Buscar");
+        jLabel1.setText("BUSCAR");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
 
         btnInsertar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/insertar (2).png"))); // NOI18N
+        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregate.png"))); // NOI18N
         btnInsertar.setText("Insertar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editate.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminaaar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -88,17 +177,17 @@ public class DlgViviendas extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 154, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 45, Short.MAX_VALUE)
                 .addComponent(btnInsertar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGap(18, 18, 18)
                 .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEliminar)
-                .addContainerGap())
+                .addGap(30, 30, 30))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -109,7 +198,7 @@ public class DlgViviendas extends javax.swing.JDialog {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -129,9 +218,9 @@ public class DlgViviendas extends javax.swing.JDialog {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addComponent(jScrollPane1)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
+                .addContainerGap()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -147,18 +236,86 @@ public class DlgViviendas extends javax.swing.JDialog {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (tblInfo.getSelectedRowCount() == 1){
-            int resp = JOptionPane.showConfirmDialog(this, "¿Desea borrar el Objeto seleccionado?");
-            
+            int resp = JOptionPane.showConfirmDialog(this, "¿Desea borrar la Vivienda Seleccionada?");
+
             if (resp == 0){  //El usuario desea borrar
-                int index = tblInfo.getSelectedRow();
-               
-                listaVivienda.remove(index);
-                JOptionPane.showMessageDialog(this, "Objeto eliminado");
-            }      
+                int fila = tblInfo.getSelectedRow();
+                int idVivienda = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+                boolean eliminado = gestion.eliminarVivienda(idVivienda);
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Vivienda eliminada correctamente.");
+                    cargarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar: el registro no existe o tiene datos asociados.");
+                }
+            }
         }else{
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Objeto");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una vivienda.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    /**
+     * Busca una vivienda por ID a partir del texto ingresado en
+     * {@code txtBuscar} y muestra únicamente ese registro en la tabla.
+     * Si el campo está vacío, vuelve a mostrar todos los registros.
+     */
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {
+        String texto = txtBuscar.getText().trim();
+
+        if (texto.isEmpty()) {
+            cargarTabla();
+            return;
+        }
+
+        int idVivienda;
+        try {
+            idVivienda = Integer.parseInt(texto);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El ID de la vivienda debe ser numérico.");
+            return;
+        }
+
+        Vivienda encontrada = gestion.buscarVivienda(idVivienda);
+        if (encontrada == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró ninguna vivienda con ese ID.");
+        } else {
+            mostrarVivienda(encontrada);
+        }
+        txtBuscar.setText("");
+    }
+
+    /**
+     * Toma la fila seleccionada de {@code tblInfo}, obtiene el ID de su
+     * columna 0 y busca la vivienda mediante
+     * {@code gestion.buscarVivienda(...)}; si existe, abre
+     * {@link FrmNuevaVivienda} en modo edición precargado con sus datos.
+     */
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tblInfo.getSelectedRowCount() != 1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar una vivienda de la tabla para editar.");
+            return;
+        }
+        int fila = tblInfo.getSelectedRow();
+        int idVivienda = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+        Vivienda encontrada = gestion.buscarVivienda(idVivienda);
+        if (encontrada == null) {
+            JOptionPane.showMessageDialog(this, "La vivienda seleccionada ya no existe.");
+            return;
+        }
+        FrmNuevaVivienda frm = new FrmNuevaVivienda(null, true, gestion, encontrada);
+        frm.setVisible(true);
+        cargarTabla();
+    }
+
+    /**
+     * Abre {@link FrmNuevaVivienda} para insertar una nueva vivienda y,
+     * al cerrarse, refresca la tabla con los datos actuales de GestionDatos.
+     */
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {
+        FrmNuevaVivienda frm = new FrmNuevaVivienda(null, true, gestion);
+        frm.setVisible(true);
+        cargarTabla();
+    }
 
     /**
      * @param args the command line arguments

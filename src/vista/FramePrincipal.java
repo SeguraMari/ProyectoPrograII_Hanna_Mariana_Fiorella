@@ -1,4 +1,3 @@
-
 package vista;
 
 import datos.GestionDatos;
@@ -8,12 +7,9 @@ import datos.GestionDatos;
  * @author Graciela_Hanna_Fiorella
  */
 public class FramePrincipal extends javax.swing.JFrame {
-    
-    private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(FramePrincipal.class.getName());
 
     private GestionDatos gestion = new GestionDatos();
-    
-    
+
     /**
      * Creates new form FramePrincipal
      */
@@ -39,8 +35,15 @@ public class FramePrincipal extends javax.swing.JFrame {
         btnMensualidades = new javax.swing.JButton();
         btnGanancias = new javax.swing.JButton();
         jLabel1 = new javax.swing.JLabel();
-        jMenuBar1 = new javax.swing.JMenuBar();
+        mniPropietario = new javax.swing.JMenuBar();
         jMenu1 = new javax.swing.JMenu();
+        mniPropietarios = new javax.swing.JMenuItem();
+        mniViviendas = new javax.swing.JMenuItem();
+        mniInquilinos = new javax.swing.JMenuItem();
+        mniAlquileres = new javax.swing.JMenuItem();
+        mniMensualidades = new javax.swing.JMenuItem();
+        mniGanancias = new javax.swing.JMenuItem();
+        mniSalir = new javax.swing.JMenuItem();
         jMenu2 = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
@@ -115,7 +118,7 @@ public class FramePrincipal extends javax.swing.JFrame {
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(55, 55, 55)
+                .addGap(52, 52, 52)
                 .addComponent(btnPropietario, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnViviendas, javax.swing.GroupLayout.PREFERRED_SIZE, 47, javax.swing.GroupLayout.PREFERRED_SIZE)
@@ -127,76 +130,161 @@ public class FramePrincipal extends javax.swing.JFrame {
                 .addComponent(btnMensualidades, javax.swing.GroupLayout.PREFERRED_SIZE, 50, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(btnGanancias, javax.swing.GroupLayout.PREFERRED_SIZE, 49, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(39, Short.MAX_VALUE))
+                .addContainerGap(42, Short.MAX_VALUE))
         );
 
-        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/renta3.png"))); // NOI18N
+        jLabel1.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/renta2.png"))); // NOI18N
 
         jMenu1.setText("File");
-        jMenuBar1.add(jMenu1);
+
+        mniPropietarios.setText("Propietarios");
+        mniPropietarios.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniPropietariosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniPropietarios);
+
+        mniViviendas.setText("Viviendas");
+        mniViviendas.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniViviendasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniViviendas);
+
+        mniInquilinos.setText("Inquilinos");
+        mniInquilinos.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniInquilinosActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniInquilinos);
+
+        mniAlquileres.setText("Alquileres");
+        mniAlquileres.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniAlquileresActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniAlquileres);
+
+        mniMensualidades.setText("Mensualidades");
+        mniMensualidades.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniMensualidadesActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniMensualidades);
+
+        mniGanancias.setText("Ganancias");
+        mniGanancias.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniGananciasActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniGanancias);
+
+        mniSalir.setText("Salir");
+        mniSalir.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                mniSalirActionPerformed(evt);
+            }
+        });
+        jMenu1.add(mniSalir);
+
+        mniPropietario.add(jMenu1);
 
         jMenu2.setText("Edit");
-        jMenuBar1.add(jMenu2);
+        mniPropietario.add(jMenu2);
 
-        setJMenuBar(jMenuBar1);
+        setJMenuBar(mniPropietario);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
-                .addContainerGap()
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jLabel1)
-                .addContainerGap())
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 437, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-            .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void btnPropietarioActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPropietarioActionPerformed
-       DlgPropietario1 proper = new DlgPropietario1(this, true);
-       proper.setLocationRelativeTo(this);
-       proper.setVisible(true);
+        DlgPropietario1 proper = new DlgPropietario1(this, true, gestion);
+        proper.setLocationRelativeTo(this);
+        proper.setVisible(true);
     }//GEN-LAST:event_btnPropietarioActionPerformed
 
     private void btnMensualidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnMensualidadesActionPerformed
-       DlgGestionMensualidades mensualidades = new DlgGestionMensualidades(this, false);
-       mensualidades.setLocationRelativeTo(this);
-       mensualidades.setVisible(true);
+        DlgGestionMensualidades mensualidades = new DlgGestionMensualidades(this, false, gestion);
+        mensualidades.setLocationRelativeTo(this);
+        mensualidades.setVisible(true);
     }//GEN-LAST:event_btnMensualidadesActionPerformed
 
     private void btnViviendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnViviendasActionPerformed
-       DlgViviendas vivienda = new DlgViviendas(this, false);
-       vivienda.setLocationRelativeTo(this);
-       vivienda.setVisible(true);
+        DlgViviendas vivienda = new DlgViviendas(this, false, gestion);
+        vivienda.setLocationRelativeTo(this);
+        vivienda.setVisible(true);
     }//GEN-LAST:event_btnViviendasActionPerformed
 
     private void btnInquilinosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInquilinosActionPerformed
-        DlgInquilinos inqui = new DlgInquilinos(this, false);
+        DlgInquilinos inqui = new DlgInquilinos(this, false, gestion);
         inqui.setLocationRelativeTo(this);
         inqui.setVisible(true);
     }//GEN-LAST:event_btnInquilinosActionPerformed
 
     private void btnAlquileresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnAlquileresActionPerformed
-     DlgAlquileres alquiler = new DlgAlquileres(this, false);
-     alquiler.setLocationRelativeTo(this);
-     alquiler.setVisible(true);
+        DlgAlquileres alquiler = new DlgAlquileres(this, false, gestion);
+        alquiler.setLocationRelativeTo(this);
+        alquiler.setVisible(true);
     }//GEN-LAST:event_btnAlquileresActionPerformed
 
     private void btnGananciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGananciasActionPerformed
-       DlgGanancias ganancias = new DlgGanancias(this, true);
-       ganancias.setLocationRelativeTo(this);
-       ganancias.setVisible(true);
+        DlgGanancias ganancias = new DlgGanancias(this, true, gestion);
+        ganancias.setLocationRelativeTo(this);
+        ganancias.setVisible(true);
     }//GEN-LAST:event_btnGananciasActionPerformed
+
+    private void mniViviendasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniViviendasActionPerformed
+         btnViviendasActionPerformed(evt);
+    }//GEN-LAST:event_mniViviendasActionPerformed
+
+    private void mniSalirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniSalirActionPerformed
+        System.exit(0);
+    }//GEN-LAST:event_mniSalirActionPerformed
+
+    private void mniPropietariosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniPropietariosActionPerformed
+        btnPropietarioActionPerformed(evt);
+    }//GEN-LAST:event_mniPropietariosActionPerformed
+
+    private void mniInquilinosActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniInquilinosActionPerformed
+         btnInquilinosActionPerformed(evt);
+    }//GEN-LAST:event_mniInquilinosActionPerformed
+
+    private void mniAlquileresActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniAlquileresActionPerformed
+         btnAlquileresActionPerformed(evt);
+    }//GEN-LAST:event_mniAlquileresActionPerformed
+
+    private void mniMensualidadesActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniMensualidadesActionPerformed
+        btnMensualidadesActionPerformed(evt);
+    }//GEN-LAST:event_mniMensualidadesActionPerformed
+
+    private void mniGananciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_mniGananciasActionPerformed
+       btnGananciasActionPerformed(evt);  
+    }//GEN-LAST:event_mniGananciasActionPerformed
 
     /**
      * @param args the command line arguments
@@ -215,7 +303,6 @@ public class FramePrincipal extends javax.swing.JFrame {
                 }
             }
         } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
         //</editor-fold>
 
@@ -233,7 +320,14 @@ public class FramePrincipal extends javax.swing.JFrame {
     private javax.swing.JLabel jLabel1;
     private javax.swing.JMenu jMenu1;
     private javax.swing.JMenu jMenu2;
-    private javax.swing.JMenuBar jMenuBar1;
     private javax.swing.JPanel jPanel1;
+    private javax.swing.JMenuItem mniAlquileres;
+    private javax.swing.JMenuItem mniGanancias;
+    private javax.swing.JMenuItem mniInquilinos;
+    private javax.swing.JMenuItem mniMensualidades;
+    private javax.swing.JMenuBar mniPropietario;
+    private javax.swing.JMenuItem mniPropietarios;
+    private javax.swing.JMenuItem mniSalir;
+    private javax.swing.JMenuItem mniViviendas;
     // End of variables declaration//GEN-END:variables
 }

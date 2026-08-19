@@ -4,13 +4,20 @@
  */
 package vista;
 
+import clases.Mensualidades;
+import datos.GestionDatos;
+import java.util.ArrayList;
+import javax.swing.table.DefaultTableModel;
+
 /**
  *
  * @author Graciela
  */
 public class DlgInfoMensualidad extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgInfoMensualidad.class.getName());
+
+    private GestionDatos gestion;
 
     /**
      * Creates new form DlgInfoMensualidad
@@ -18,6 +25,76 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
     public DlgInfoMensualidad(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+    }
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación, para que en una fase posterior pueda
+     * consultar los datos reales del reporte. En esta fase no se implementa
+     * ninguna lógica de consulta ni de cálculo.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgInfoMensualidad(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+    }
+
+    /**
+     * Crea el diálogo mostrando el detalle real de la mensualidad recibida,
+     * consultada previamente mediante la selección de una fila en
+     * {@link DlgGestionMensualidades}. Solo consulta y muestra los datos; no
+     * modifica ni elimina la mensualidad recibida.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     * @param mensualidad mensualidad real a mostrar.
+     */
+    public DlgInfoMensualidad(java.awt.Frame parent, boolean modal, GestionDatos gestion, Mensualidades mensualidad) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+
+        jLabel1.setText("Consulta Para el Periodo: " + mensualidad.getMesCobro() + "/" + mensualidad.getAnioActual());
+        jLabel2.setText("Total Cobrado en el Mes: " + mensualidad.getMontoMes());
+
+        String[] columnas = {"Consecutivo", "Num Alquiler", "Inquilino", "Monto", "Estado"};
+        Object[][] datos = new Object[][]{{
+            mensualidad.getConsecutivo(),
+            mensualidad.getNumAlquiler(),
+            mensualidad.getNomInquilino(),
+            mensualidad.getMontoMes(),
+            mensualidad.getEstado()
+        }};
+        tblInformacion.setModel(new DefaultTableModel(datos, columnas));
+    }
+
+    public DlgInfoMensualidad(java.awt.Frame parent, boolean modal, GestionDatos gestion,
+            ArrayList<Mensualidades> mensualidades, int mes, int anio) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+
+        jLabel1.setText("Consulta Para el Periodo: " + mes + "/" + anio);
+
+        String[] columnas = {"Consecutivo", "Num Alquiler", "Inquilino", "Monto", "Estado"};
+        Object[][] datos = new Object[mensualidades.size()][columnas.length];
+        double totalCobrado = 0;
+        for (int fila = 0; fila < mensualidades.size(); fila++) {
+            Mensualidades m = mensualidades.get(fila);
+            datos[fila][0] = m.getConsecutivo();
+            datos[fila][1] = m.getNumAlquiler();
+            datos[fila][2] = m.getNomInquilino();
+            datos[fila][3] = m.getMontoMes();
+            datos[fila][4] = m.getEstado();
+            totalCobrado += m.getMontoMes();
+        }
+        tblInformacion.setModel(new DefaultTableModel(datos, columnas));
+        jLabel2.setText("Total Cobrado en el Mes: " + totalCobrado);
     }
 
     /**
@@ -31,9 +108,9 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
 
         jLabel1 = new javax.swing.JLabel();
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        tblInformacion = new javax.swing.JTable();
         jLabel2 = new javax.swing.JLabel();
-        jButton1 = new javax.swing.JButton();
+        btnCerrar = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setTitle("Reporte De Mensualidades Consultadas");
@@ -41,7 +118,7 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel1.setText("Consulta Para el Periodo: ");
 
-        jTable1.setModel(new javax.swing.table.DefaultTableModel(
+        tblInformacion.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
                 {null, null, null, null, null},
                 {null, null, null, null, null},
@@ -53,13 +130,18 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
                 "Consecutivo", "Num Alquiler", "Inquilino", "Monto", "Estado"
             }
         ));
-        jScrollPane1.setViewportView(jTable1);
+        jScrollPane1.setViewportView(tblInformacion);
 
         jLabel2.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
         jLabel2.setText("Total Cobrado en el Mes: ");
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jButton1.setText("Cerrar");
+        btnCerrar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
+        btnCerrar.setText("Cerrar");
+        btnCerrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnCerrarActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -77,7 +159,7 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 91, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(43, 43, 43))
         );
         layout.setVerticalGroup(
@@ -90,12 +172,16 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
                 .addGap(44, 44, 44)
                 .addComponent(jLabel2)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 29, Short.MAX_VALUE)
-                .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(btnCerrar, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(25, 25, 25))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
+
+    private void btnCerrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCerrarActionPerformed
+        this.dispose();
+    }//GEN-LAST:event_btnCerrarActionPerformed
 
     /**
      * @param args the command line arguments
@@ -135,10 +221,10 @@ public class DlgInfoMensualidad extends javax.swing.JDialog {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton jButton1;
+    private javax.swing.JButton btnCerrar;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JTable tblInformacion;
     // End of variables declaration//GEN-END:variables
 }

@@ -1,7 +1,8 @@
 
 package vista;
 
-
+import datos.GestionDatos;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -9,9 +10,9 @@ package vista;
  */
 public class DlgGanancias extends javax.swing.JDialog {
 
-   
-
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgGanancias.class.getName());
+
+    private GestionDatos gestion;
 
     /**
      * Creates new form DlgGanancias
@@ -19,6 +20,36 @@ public class DlgGanancias extends javax.swing.JDialog {
     public DlgGanancias(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        agruparTipoConsulta();
+    }
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación. Es el constructor utilizado por
+     * {@code FramePrincipal}.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgGanancias(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        agruparTipoConsulta();
+        this.gestion = gestion;
+    }
+
+    /**
+     * Agrupa {@code rdbGananciaMensual} y {@code rdbGananciasAnual} en un
+     * {@link javax.swing.ButtonGroup} no visual, para que la selección del
+     * tipo de consulta sea mutuamente excluyente (el {@code .form} original
+     * no los tenía agrupados). Se preselecciona la consulta mensual.
+     */
+    private void agruparTipoConsulta() {
+        javax.swing.ButtonGroup grupo = new javax.swing.ButtonGroup();
+        grupo.add(rdbGananciaMensual);
+        grupo.add(rdbGananciasAnual);
+        rdbGananciaMensual.setSelected(true);
     }
 
     /**
@@ -47,8 +78,8 @@ public class DlgGanancias extends javax.swing.JDialog {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
-        jPanel1.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Selección de Periodo", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Selección de Periodo", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         jLabel1.setText("Tipo de Consulta");
@@ -122,8 +153,8 @@ public class DlgGanancias extends javax.swing.JDialog {
                 .addContainerGap())
         );
 
-        jPanel2.setBackground(new java.awt.Color(153, 153, 153));
-        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(null, "Desglose e Ingresos Totales", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
+        jPanel2.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel2.setBorder(javax.swing.BorderFactory.createTitledBorder(new javax.swing.border.LineBorder(new java.awt.Color(0, 0, 0), 1, true), "Desglose e Ingresos Totales", javax.swing.border.TitledBorder.LEFT, javax.swing.border.TitledBorder.DEFAULT_POSITION, new java.awt.Font("Segoe UI", 3, 12))); // NOI18N
 
         jLabel4.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         jLabel4.setText("Ingresos Por depósitos de Garantía  (50%)");
@@ -136,6 +167,11 @@ public class DlgGanancias extends javax.swing.JDialog {
 
         jButton2.setFont(new java.awt.Font("Segoe UI", 3, 10)); // NOI18N
         jButton2.setText("Cerrar");
+        jButton2.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButton2ActionPerformed(evt);
+            }
+        });
 
         javax.swing.GroupLayout jPanel2Layout = new javax.swing.GroupLayout(jPanel2);
         jPanel2.setLayout(jPanel2Layout);
@@ -191,9 +227,50 @@ public class DlgGanancias extends javax.swing.JDialog {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    /**
+     * Lee el periodo seleccionado (tipo de consulta, mes y año) y llama
+     * exclusivamente a los métodos públicos ya implementados en
+     * {@code GestionDatos} ({@code calcularIngresoDepositosMensual/Anual},
+     * {@code calcularIngresoMensualidadesMensual/Anual},
+     * {@code calcularGananciaMensual/Anual}) para actualizar el desglose.
+     * No recalcula ni duplica ninguna fórmula en la interfaz.
+     */
     private void btnCalcularGananciasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCalcularGananciasActionPerformed
-       
+        String textoAnio = txtAnio.getText().trim();
+        int anio;
+        try {
+            anio = Integer.parseInt(textoAnio);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El año debe ser numérico.");
+            return;
+        }
+
+        double ingresoDepositos;
+        double ingresoMensualidades;
+        double gananciaTotal;
+
+        if (rdbGananciaMensual.isSelected()) {
+            int mes = cmbMes.getSelectedIndex() + 1;
+            ingresoDepositos = gestion.calcularIngresoDepositosMensual(mes, anio);
+            ingresoMensualidades = gestion.calcularIngresoMensualidadesMensual(mes, anio);
+            gananciaTotal = gestion.calcularGananciaMensual(mes, anio);
+        } else if (rdbGananciasAnual.isSelected()) {
+            ingresoDepositos = gestion.calcularIngresoDepositosAnual(anio);
+            ingresoMensualidades = gestion.calcularIngresoMensualidadesAnual(anio);
+            gananciaTotal = gestion.calcularGananciaAnual(anio);
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar el tipo de consulta (Ganancias Mensuales o Ganancias Anuales).");
+            return;
+        }
+
+        jLabel4.setText("Ingresos Por depósitos de Garantía  (50%): " + ingresoDepositos);
+        jLabel5.setText("Ingresos por Mensualidades Cobradas (5%): " + ingresoMensualidades);
+        jLabel6.setText("GANANCIA TOTAL OBTENIDA: " + gananciaTotal);
     }//GEN-LAST:event_btnCalcularGananciasActionPerformed
+
+    private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {
+        this.dispose();
+    }
 
     /**
          * @param args the command line arguments

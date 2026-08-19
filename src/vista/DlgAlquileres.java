@@ -1,7 +1,8 @@
 
 package vista;
 
-import datos.Alquileres;
+import clases.Alquileres;
+import datos.GestionDatos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,13 +12,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgAlquileres extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgAlquileres.class.getName());
 
     private ArrayList<Alquileres> listaAlquiler;
     private DefaultTableModel model;
-    
-    
+    private GestionDatos gestion;
+
+
     /**
      * Creates new form DlgPropietario1
      */
@@ -25,20 +27,82 @@ public class DlgAlquileres extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-    
+
+
     public DlgAlquileres(java.awt.Frame parent, boolean modal,
-            ArrayList<Alquileres> listaPropietario) {
+            ArrayList<Alquileres> listaAlquiler) {
         super(parent, modal);
         initComponents();
-        this.listaAlquiler = listaPropietario;
+        this.listaAlquiler = listaAlquiler;
     }
-    
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación. Es el constructor utilizado por
+     * {@code FramePrincipal}.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgAlquileres(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+        cargarTabla();
+    }
+
      public  ArrayList<Alquileres> getListaAlquiler() {
         return listaAlquiler;
     }
-    
-    
+
+    /**
+     * Carga en {@code tblInfo} los alquileres existentes en GestionDatos.
+     */
+    private void cargarTabla() {
+        String[] columnas = {"Núm. Alquiler", "Fecha Contrato", "Meses", "Adultos", "Niños",
+            "Depósito", "Precio Alquiler", "% Increm. Anual", "Inquilino", "Vivienda", "Estado"};
+        ArrayList<Alquileres> alquileres = gestion.obtenerAlquileres();
+        Object[][] datos = new Object[alquileres.size()][columnas.length];
+        for (int fila = 0; fila < alquileres.size(); fila++) {
+            Alquileres a = alquileres.get(fila);
+            datos[fila][0] = a.getNumAlquiler();
+            datos[fila][1] = a.getFechContrato();
+            datos[fila][2] = a.getCantMeses();
+            datos[fila][3] = a.getNumAdultos();
+            datos[fila][4] = a.getNumNinos();
+            datos[fila][5] = a.getDepositoGarantia();
+            datos[fila][6] = a.getPrecioAlquiler();
+            datos[fila][7] = a.getPorcIncremAnual();
+            datos[fila][8] = a.getInquilino() == null ? "" : a.getInquilino().getNomInqui();
+            datos[fila][9] = a.getVivienda() == null ? "" : a.getVivienda().getDescripcion();
+            datos[fila][10] = a.getEstado();
+        }
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
+
+    /**
+     * Muestra en {@code tblInfo} únicamente el alquiler recibido.
+     */
+    private void mostrarAlquiler(Alquileres a) {
+        String[] columnas = {"Núm. Alquiler", "Fecha Contrato", "Meses", "Adultos", "Niños",
+            "Depósito", "Precio Alquiler", "% Increm. Anual", "Inquilino", "Vivienda", "Estado"};
+        Object[][] datos = new Object[1][columnas.length];
+        datos[0][0] = a.getNumAlquiler();
+        datos[0][1] = a.getFechContrato();
+        datos[0][2] = a.getCantMeses();
+        datos[0][3] = a.getNumAdultos();
+        datos[0][4] = a.getNumNinos();
+        datos[0][5] = a.getDepositoGarantia();
+        datos[0][6] = a.getPrecioAlquiler();
+        datos[0][7] = a.getPorcIncremAnual();
+        datos[0][8] = a.getInquilino() == null ? "" : a.getInquilino().getNomInqui();
+        datos[0][9] = a.getVivienda() == null ? "" : a.getVivienda().getDescripcion();
+        datos[0][10] = a.getEstado();
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,20 +125,37 @@ public class DlgAlquileres extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jLabel1.setText("Buscar");
+        jLabel1.setText("BUSCAR");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
 
         btnInsertar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/insertar (2).png"))); // NOI18N
+        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregate.png"))); // NOI18N
         btnInsertar.setText("Insertar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editate.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminaaar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,11 +168,11 @@ public class DlgAlquileres extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(16, 16, 16)
+                .addComponent(jLabel1)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, Short.MAX_VALUE)
                 .addComponent(btnInsertar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEditar)
@@ -108,7 +189,7 @@ public class DlgAlquileres extends javax.swing.JDialog {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -126,18 +207,18 @@ public class DlgAlquileres extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 62, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -147,17 +228,84 @@ public class DlgAlquileres extends javax.swing.JDialog {
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (tblInfo.getSelectedRowCount() == 1){
             int resp = JOptionPane.showConfirmDialog(this, "¿Desea borrar el Objeto seleccionado?");
-            
+
             if (resp == 0){  //El usuario desea borrar
-                int index = tblInfo.getSelectedRow();
-               
-                listaAlquiler.remove(index);
-                JOptionPane.showMessageDialog(this, "Objeto eliminado");
-            }      
+                int fila = tblInfo.getSelectedRow();
+                int numAlquiler = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+                boolean eliminado = gestion.eliminarAlquiler(numAlquiler);
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Alquiler eliminado correctamente.");
+                    cargarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar: el registro no existe o tiene datos asociados.");
+                }
+            }
         }else{
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Objeto");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un alquiler.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    /**
+     * Busca un alquiler por número a partir del texto ingresado en
+     * {@code txtBuscar} y muestra únicamente ese registro en la tabla.
+     * Si el campo está vacío, vuelve a mostrar todos los registros.
+     */
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {
+        String texto = txtBuscar.getText().trim();
+
+        if (texto.isEmpty()) {
+            cargarTabla();
+            return;
+        }
+
+        int numAlquiler;
+        try {
+            numAlquiler = Integer.parseInt(texto);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El número de alquiler debe ser numérico.");
+            return;
+        }
+
+        Alquileres encontrado = gestion.buscarAlquiler(numAlquiler);
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(this, "No se encontró ningún alquiler con ese número.");
+        } else {
+            mostrarAlquiler(encontrado);
+        }
+    }
+
+    /**
+     * Toma la fila seleccionada de {@code tblInfo}, obtiene el número de su
+     * columna 0 y busca el alquiler mediante
+     * {@code gestion.buscarAlquiler(...)}; si existe, abre
+     * {@link FrmNuevoAlquiler} en modo edición precargado con sus datos.
+     */
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {
+        if (tblInfo.getSelectedRowCount() != 1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un alquiler de la tabla para editar.");
+            return;
+        }
+        int fila = tblInfo.getSelectedRow();
+        int numAlquiler = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+        Alquileres encontrado = gestion.buscarAlquiler(numAlquiler);
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(this, "El alquiler seleccionado ya no existe.");
+            return;
+        }
+        FrmNuevoAlquiler frm = new FrmNuevoAlquiler(null, true, gestion, encontrado);
+        frm.setVisible(true);
+        cargarTabla();
+    }
+
+    /**
+     * Abre {@link FrmNuevoAlquiler} para insertar un nuevo alquiler y,
+     * al cerrarse, refresca la tabla con los datos actuales de GestionDatos.
+     */
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {
+        FrmNuevoAlquiler frm = new FrmNuevoAlquiler(null, true, gestion);
+        frm.setVisible(true);
+        cargarTabla();
+    }
 
     /**
      * @param args the command line arguments

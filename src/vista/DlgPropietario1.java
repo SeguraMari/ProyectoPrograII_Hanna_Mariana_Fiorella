@@ -1,7 +1,8 @@
 
 package vista;
 
-import datos.Propietario;
+import clases.Propietario;
+import datos.GestionDatos;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
@@ -11,13 +12,14 @@ import javax.swing.table.DefaultTableModel;
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgPropietario1 extends javax.swing.JDialog {
-    
+
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgPropietario1.class.getName());
 
     private ArrayList<Propietario> listaPropietario;
     private DefaultTableModel model;
-    
-    
+    private GestionDatos gestion;
+
+
     /**
      * Creates new form DlgPropietario1
      */
@@ -25,20 +27,67 @@ public class DlgPropietario1 extends javax.swing.JDialog {
         super(parent, modal);
         initComponents();
     }
-    
-    
+
+
     public DlgPropietario1(java.awt.Frame parent, boolean modal,
             ArrayList<Propietario> listaPropietario) {
         super(parent, modal);
         initComponents();
         this.listaPropietario = listaPropietario;
     }
-    
+
+    /**
+     * Crea el diálogo utilizando la única instancia de {@link GestionDatos}
+     * compartida por la aplicación. Es el constructor utilizado por
+     * {@code FramePrincipal}.
+     *
+     * @param parent ventana padre del diálogo.
+     * @param modal indica si el diálogo es modal.
+     * @param gestion instancia compartida de GestionDatos.
+     */
+    public DlgPropietario1(java.awt.Frame parent, boolean modal, GestionDatos gestion) {
+        super(parent, modal);
+        initComponents();
+        this.gestion = gestion;
+        cargarTabla();
+    }
+
      public  ArrayList<Propietario> getListaPropietario() {
         return listaPropietario;
     }
-    
-    
+
+    /**
+     * Carga en {@code tblInfo} todos los propietarios existentes en
+     * GestionDatos.
+     */
+    private void cargarTabla() {
+        mostrarEnTabla(gestion.obtenerPropietarios());
+    }
+
+    /**
+     * Construye el modelo de {@code tblInfo} a partir de la lista de
+     * propietarios recibida. Se usa tanto para mostrar el listado completo
+     * como para mostrar únicamente el resultado de una búsqueda.
+     *
+     * @param propietarios propietarios a mostrar en la tabla.
+     */
+    private void mostrarEnTabla(ArrayList<Propietario> propietarios) {
+        String[] columnas = {"Cédula", "Nombre", "Género", "Dirección", "Teléfono", "Email"};
+        Object[][] datos = new Object[propietarios.size()][columnas.length];
+        for (int fila = 0; fila < propietarios.size(); fila++) {
+            Propietario p = propietarios.get(fila);
+            datos[fila][0] = p.getCedPropiet();
+            datos[fila][1] = p.getNomPropiet();
+            datos[fila][2] = p.getGenero();
+            datos[fila][3] = p.getDireccion();
+            datos[fila][4] = p.getTelefono();
+            datos[fila][5] = p.getEmail();
+        }
+        model = new DefaultTableModel(datos, columnas);
+        tblInfo.setModel(model);
+    }
+
+
 
     /**
      * This method is called from within the constructor to initialize the form.
@@ -61,20 +110,37 @@ public class DlgPropietario1 extends javax.swing.JDialog {
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
 
         jPanel1.setBackground(new java.awt.Color(204, 204, 204));
+        jPanel1.setBorder(new javax.swing.border.MatteBorder(null));
 
         jLabel1.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        jLabel1.setText("Buscar");
+        jLabel1.setText("BUSCAR");
+
+        txtBuscar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtBuscarActionPerformed(evt);
+            }
+        });
 
         btnInsertar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/insertar (2).png"))); // NOI18N
+        btnInsertar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/agregate.png"))); // NOI18N
         btnInsertar.setText("Insertar");
+        btnInsertar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnInsertarActionPerformed(evt);
+            }
+        });
 
         btnEditar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editar.png"))); // NOI18N
+        btnEditar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/editate.png"))); // NOI18N
         btnEditar.setText("Editar");
+        btnEditar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEditarActionPerformed(evt);
+            }
+        });
 
         btnEliminar.setFont(new java.awt.Font("Segoe UI", 3, 12)); // NOI18N
-        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminar.png"))); // NOI18N
+        btnEliminar.setIcon(new javax.swing.ImageIcon(getClass().getResource("/img/eliminaaar.png"))); // NOI18N
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -87,11 +153,11 @@ public class DlgPropietario1 extends javax.swing.JDialog {
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGap(20, 20, 20)
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 43, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addContainerGap()
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 57, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 143, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 47, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(btnInsertar)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
                 .addComponent(btnEditar)
@@ -108,7 +174,7 @@ public class DlgPropietario1 extends javax.swing.JDialog {
                     .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnInsertar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(btnEditar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnEliminar))
+                    .addComponent(btnEliminar, javax.swing.GroupLayout.PREFERRED_SIZE, 55, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(42, Short.MAX_VALUE))
         );
 
@@ -126,18 +192,18 @@ public class DlgPropietario1 extends javax.swing.JDialog {
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jScrollPane1)
+            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 632, Short.MAX_VALUE)
             .addGroup(layout.createSequentialGroup()
-                .addGap(19, 19, 19)
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(21, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addContainerGap())
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(17, 17, 17)
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 70, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 68, Short.MAX_VALUE)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 266, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -146,18 +212,86 @@ public class DlgPropietario1 extends javax.swing.JDialog {
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
         if (tblInfo.getSelectedRowCount() == 1){
-            int resp = JOptionPane.showConfirmDialog(this, "¿Desea borrar el Objeto seleccionado?");
-            
+            int resp = JOptionPane.showConfirmDialog(this, "¿Desea eliminar el propietario seleccionado?");
+
             if (resp == 0){  //El usuario desea borrar
-                int index = tblInfo.getSelectedRow();
-               
-                listaPropietario.remove(index);
-                JOptionPane.showMessageDialog(this, "Objeto eliminado");
-            }      
+                int fila = tblInfo.getSelectedRow();
+                int cedula = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+                boolean eliminado = gestion.eliminarPropietario(cedula);
+                if (eliminado) {
+                    JOptionPane.showMessageDialog(this, "Propietario eliminado correctamente.");
+                    cargarTabla();
+                } else {
+                    JOptionPane.showMessageDialog(this, "No se pudo eliminar: el propietario no existe o tiene viviendas asociadas.");
+                }
+            }
         }else{
-            JOptionPane.showMessageDialog(this, "Debe seleccionar un Objeto");
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un propietario de la tabla para eliminar.");
         }
     }//GEN-LAST:event_btnEliminarActionPerformed
+
+    /**
+     * Busca (al presionar Enter en {@code txtBuscar}) el propietario cuya
+     * cédula se ingresó, mediante {@code gestion.buscarPropietario(...)}, y
+     * filtra {@code tblInfo} para mostrar únicamente ese resultado. Si el
+     * campo está vacío, restaura el listado completo. Es independiente del
+     * botón Editar, que trabaja sobre la fila seleccionada.
+     */
+    private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {
+        String texto = txtBuscar.getText().trim();
+        if (texto.isEmpty()) {
+            cargarTabla();
+            return;
+        }
+        int cedula;
+        try {
+            cedula = Integer.parseInt(texto);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "La cédula del propietario debe ser numérica.");
+            return;
+        }
+        Propietario encontrado = gestion.buscarPropietario(cedula);
+        ArrayList<Propietario> resultado = new ArrayList<>();
+        if (encontrado != null) {
+            resultado.add(encontrado);
+            mostrarEnTabla(resultado);
+        } else {
+            mostrarEnTabla(resultado);
+            JOptionPane.showMessageDialog(this, "No se encontró ningún propietario con esa cédula.");
+        }
+        
+         txtBuscar.setText("");
+    }
+
+    private void btnInsertarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnInsertarActionPerformed
+        FrmNuevoPropietario frm = new FrmNuevoPropietario(null, true, gestion);
+        frm.setVisible(true);
+        cargarTabla();
+    }//GEN-LAST:event_btnInsertarActionPerformed
+
+    /**
+     * Toma la fila seleccionada de {@code tblInfo}, obtiene la cédula de su
+     * columna 0 y busca el propietario mediante
+     * {@code gestion.buscarPropietario(...)}; si existe, abre el formulario
+     * de edición precargado con sus datos. No utiliza {@code txtBuscar}, que
+     * es independiente de esta operación.
+     */
+    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
+        if (tblInfo.getSelectedRowCount() != 1) {
+            JOptionPane.showMessageDialog(this, "Debe seleccionar un propietario de la tabla para editar.");
+            return;
+        }
+        int fila = tblInfo.getSelectedRow();
+        int cedula = ((Number) tblInfo.getValueAt(fila, 0)).intValue();
+        Propietario encontrado = gestion.buscarPropietario(cedula);
+        if (encontrado == null) {
+            JOptionPane.showMessageDialog(this, "El propietario seleccionado ya no existe.");
+            return;
+        }
+        FrmNuevoPropietario frm = new FrmNuevoPropietario(null, true, gestion, encontrado);
+        frm.setVisible(true);
+        cargarTabla();
+    }//GEN-LAST:event_btnEditarActionPerformed
 
     /**
      * @param args the command line arguments
