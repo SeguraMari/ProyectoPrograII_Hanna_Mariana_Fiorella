@@ -3,7 +3,7 @@ package vista;
 import datos.GestionDatos;
 
 /**
- *
+ * Ventana principal tipo menú de inicio para acceder a todos los módulos del sistema.
  * @author Graciela_Hanna_Fiorella
  */
 public class FramePrincipal extends javax.swing.JFrame {
