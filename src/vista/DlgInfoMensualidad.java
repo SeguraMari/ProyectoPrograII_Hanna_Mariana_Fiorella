@@ -10,8 +10,8 @@ import java.util.ArrayList;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
- * @author Graciela
+ * Ventana para consultar el reporte y detalle del cobro de mensualidades.
+ * @author Graciela_Hanna_Fiorella
  */
 public class DlgInfoMensualidad extends javax.swing.JDialog {
 
