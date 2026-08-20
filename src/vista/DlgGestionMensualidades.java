@@ -1,4 +1,3 @@
-
 package vista;
 
 import clases.Mensualidades;
@@ -9,10 +8,10 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
+ * Ventana para la generación, filtrado y consulta general de mensualidades.
  *
  * @author Graciela_Hanna_Fiorella
  */
-
 public class DlgGestionMensualidades extends javax.swing.JDialog {
 
     private static final java.util.logging.Logger logger = java.util.logging.Logger.getLogger(DlgGestionMensualidades.class.getName());
@@ -26,6 +25,11 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     public DlgGestionMensualidades(java.awt.Frame parent, boolean modal) {
         super(parent, modal);
         initComponents();
+        txtFiltrar.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+               
+            }
+        });
     }
 
     /**
@@ -55,7 +59,7 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     }
 
     /**
-     * Carga datos en la tabla 
+     * Carga datos en la tabla
      */
     private void aplicarFiltro() {
         String texto = txtFiltrar.getText();
@@ -122,8 +126,7 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
                 resultado.add(men);
             }
         }
-         mostrarMensualidades(resultado);
-
+        mostrarMensualidades(resultado);
 
     }
 
@@ -471,28 +474,28 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
      * {@code GestionDatos}.
      */
     private void btnGenerarActionPerformed(java.awt.event.ActionEvent evt) {
-    int mes = cmbmesGen.getSelectedIndex() + 1;
+        int mes = cmbmesGen.getSelectedIndex() + 1;
 
-    String textoAnio = txtAnioGen.getText().trim();
-    int anio;
-    try {
-        anio = Integer.parseInt(textoAnio);
-    } catch (NumberFormatException ex) {
-        JOptionPane.showMessageDialog(this, "El año debe ser numérico.");
-        return;
+        String textoAnio = txtAnioGen.getText().trim();
+        int anio;
+        try {
+            anio = Integer.parseInt(textoAnio);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(this, "El año debe ser numérico.");
+            return;
+        }
+
+        int resultado = gestion.generarMensualidades(mes, anio);
+
+        if (resultado == -1) {
+            JOptionPane.showMessageDialog(this, "No se pueden generar mensualidades para un periodo anterior al actual.");
+        } else if (resultado == 0) {
+            JOptionPane.showMessageDialog(this, "No se generaron nuevas mensualidades para el periodo seleccionado.");
+        } else {
+            JOptionPane.showMessageDialog(this, "Se generaron " + resultado + " mensualidades correctamente.");
+        }
+        aplicarFiltro();
     }
-
-    int resultado = gestion.generarMensualidades(mes, anio);
-
-    if (resultado == -1) {
-        JOptionPane.showMessageDialog(this, "No se pueden generar mensualidades para un periodo anterior al actual.");
-    } else if (resultado == 0) {
-        JOptionPane.showMessageDialog(this, "No se generaron nuevas mensualidades para el periodo seleccionado.");
-    } else {
-        JOptionPane.showMessageDialog(this, "Se generaron " + resultado + " mensualidades correctamente.");
-    }
-    aplicarFiltro();
-}
 
     /**
      * Lee el estado actual de los filtros ({@code chkMes}/{@code cmbMes},
@@ -528,45 +531,99 @@ public class DlgGestionMensualidades extends javax.swing.JDialog {
     }//GEN-LAST:event_btnMostrarMensualidadesActionPerformed
 
     private void txtFechActualActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtFechActualActionPerformed
-        // TODO add your handling code here:
+        String texto = txtFiltrar.getText().trim();
+
+        if (texto.isEmpty()) {
+            cargarTabla();
+            return;
+        }
+
+        if (!chkInquilino.isSelected() && !chkMes.isSelected() && !chkAnio.isSelected()) {
+            JOptionPane.showMessageDialog(this, "Debe marcar al menos un filtro: Inquilino, Mes o Año.");
+            return;
+        }
+
+        ArrayList<Mensualidades> todas = gestion.obtenerMensualidades();
+        ArrayList<Mensualidades> resultado = new ArrayList<>();
+
+        for (Mensualidades m : todas) {
+            boolean coincide = true;
+
+            if (chkInquilino.isSelected()) {
+                String nombre = m.getNomInquilino().toLowerCase();
+                if (!nombre.contains(texto.toLowerCase())) {
+                    coincide = false;
+                }
+            }
+
+            if (chkMes.isSelected()) {
+                try {
+                    int mesBuscado = Integer.parseInt(texto);
+                    if (m.getMesCobro() != mesBuscado) {
+                        coincide = false;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Para filtrar por Mes, escriba un número del 1 al 12.");
+                    return;
+                }
+            }
+
+            if (chkAnio.isSelected()) {
+                try {
+                    int anioBuscado = Integer.parseInt(texto);
+                    if (m.getAnioActual() != anioBuscado) {
+                        coincide = false;
+                    }
+                } catch (NumberFormatException ex) {
+                    JOptionPane.showMessageDialog(this, "Para filtrar por Año, escriba un número de 4 dígitos.");
+                    return;
+                }
+            }
+
+            if (coincide) {
+                resultado.add(m);
+            }
+        }
+
+        mostrarMensualidades(resultado);
     }//GEN-LAST:event_txtFechActualActionPerformed
 
     /**
      * @param args the command line arguments
      */
     public static void main(String args[]) {
-    /* Set the Nimbus look and feel */
-    //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
-    /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
+        /* Set the Nimbus look and feel */
+        //<editor-fold defaultstate="collapsed" desc=" Look and feel setting code (optional) ">
+        /* If Nimbus (introduced in Java SE 6) is not available, stay with the default look and feel.
          * For details see http://download.oracle.com/javase/tutorial/uiswing/lookandfeel/plaf.html 
-     */
-    try {
-        for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
-            if ("Nimbus".equals(info.getName())) {
-                javax.swing.UIManager.setLookAndFeel(info.getClassName());
-                break;
-            }
-        }
-    } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
-        logger.log(java.util.logging.Level.SEVERE, null, ex);
-    }
-    //</editor-fold>
-
-    /* Create and display the dialog */
-    java.awt.EventQueue.invokeLater(new Runnable() {
-        @Override
-        public void run() {
-            DlgGestionMensualidades dialog = new DlgGestionMensualidades(new javax.swing.JFrame(), true);
-            dialog.addWindowListener(new java.awt.event.WindowAdapter() {
-                @Override
-                public void windowClosing(java.awt.event.WindowEvent e) {
-                    System.exit(0);
+         */
+        try {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
+                if ("Nimbus".equals(info.getName())) {
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
+                    break;
                 }
-            });
-            dialog.setVisible(true);
+            }
+        } catch (ReflectiveOperationException | javax.swing.UnsupportedLookAndFeelException ex) {
+            logger.log(java.util.logging.Level.SEVERE, null, ex);
         }
-    });
-}
+        //</editor-fold>
+
+        /* Create and display the dialog */
+        java.awt.EventQueue.invokeLater(new Runnable() {
+            @Override
+            public void run() {
+                DlgGestionMensualidades dialog = new DlgGestionMensualidades(new javax.swing.JFrame(), true);
+                dialog.addWindowListener(new java.awt.event.WindowAdapter() {
+                    @Override
+                    public void windowClosing(java.awt.event.WindowEvent e) {
+                        System.exit(0);
+                    }
+                });
+                dialog.setVisible(true);
+            }
+        });
+    }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerar;
