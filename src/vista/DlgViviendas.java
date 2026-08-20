@@ -9,7 +9,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Formulario para consultar, buscar, insertar, editar y eliminar viviendas.
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgViviendas extends javax.swing.JDialog {
