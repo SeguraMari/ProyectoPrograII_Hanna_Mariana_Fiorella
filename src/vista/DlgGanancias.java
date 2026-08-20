@@ -5,7 +5,7 @@ import datos.GestionDatos;
 import javax.swing.JOptionPane;
 
 /**
- *
+ * Ventana para el cálculo, desglose y consulta de ganancias periódicas (mensuales o anuales).
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgGanancias extends javax.swing.JDialog {

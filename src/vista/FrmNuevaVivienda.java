@@ -13,7 +13,7 @@ import javax.swing.JOptionPane;
  * {@link FrmNuevoPropietario} y {@link FrmNuevoInquilino}. Permite insertar una
  * nueva vivienda mediante {@link datos.GestionDatos}.
  *
- * @author
+ * @author Hanna_Mariana_Fiorella
  */
 public class FrmNuevaVivienda extends javax.swing.JDialog {
 

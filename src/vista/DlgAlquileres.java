@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Ventana para la consulta, registro, modificación y eliminación de alquileres.
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgAlquileres extends javax.swing.JDialog {
