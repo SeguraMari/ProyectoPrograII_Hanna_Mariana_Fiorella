@@ -8,7 +8,7 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
 /**
- *
+ * Ventana para la gestión de propietarios (consultar, buscar, agregar, editar y eliminar).
  * @author Graciela_Hanna_Fiorella
  */
 public class DlgPropietario1 extends javax.swing.JDialog {
